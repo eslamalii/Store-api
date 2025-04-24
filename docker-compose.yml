@@ -1,0 +1,28 @@
+services:
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    volumes:
+      - storeDB:/var/lib/mysql
+    ports:
+      - '3306:3306'
+
+  app:
+    build: .
+    depends_on:
+      - db
+    ports:
+      - '3000:3000'
+    env_file:
+      - .env
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: bun run dev
+
+volumes:
+  storeDB:

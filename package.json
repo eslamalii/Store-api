@@ -3,6 +3,13 @@
   "module": "index.ts",
   "type": "module",
   "private": true,
+  "scripts": {
+    "dev": "bun --watch src/index.ts",
+    "build": "bun build src/index.ts --outdir=dist --format=cjs",
+    "start": "bun run dist/index.js",
+    "prisma:generate": "bun prisma generate",
+    "prisma:migrate": "bun prisma migrate dev --name init"
+  },
   "devDependencies": {
     "@types/bun": "latest",
     "@types/express": "^5.0.1",
@@ -14,6 +21,7 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@prisma/client": "^6.6.0",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "typeorm": "^0.3.22"
