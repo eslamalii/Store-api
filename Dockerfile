@@ -7,11 +7,9 @@ RUN bun install
 
 COPY prisma ./prisma
 RUN bun prisma generate
-RUN bun prisma migrate deploy
 
 COPY tsconfig.json ./
 COPY src ./src
-RUN bun build src/server.ts --outdir dist
 
 EXPOSE 3000
-CMD ["bun", "src/server.ts"]
+CMD ["sh","-c","bun prisma db push && bun --watch src/server.ts"]

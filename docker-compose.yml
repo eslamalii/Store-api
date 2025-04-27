@@ -3,7 +3,6 @@ version: '3.8'
 services:
   db:
     image: mysql:8.0
-    env_file: .env
     environment:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -13,6 +12,34 @@ services:
       - storeDB:/var/lib/mysql
     ports:
       - '3306:3306'
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'mysqladmin',
+          'ping',
+          '-h',
+          'localhost',
+          '-u${MYSQL_USER}',
+          '-p${MYSQL_PASSWORD}',
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  app:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    ports:
+      - '${PORT:-3000}:3000'
+    depends_on:
+      db:
+        condition: service_healthy
 
 volumes:
   storeDB:
