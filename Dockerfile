@@ -13,4 +13,4 @@ COPY src ./src
 RUN bun build src/server.ts --outdir dist
 
 EXPOSE 3000
-CMD ["bun", "dist/server.js"]
+CMD ["bun", "src/server.ts"]
