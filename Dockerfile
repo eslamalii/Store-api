@@ -7,6 +7,7 @@ RUN bun install
 
 COPY prisma ./prisma
 RUN bun prisma generate
+RUN bun prisma migrate deploy
 
 COPY tsconfig.json ./
 COPY src ./src
