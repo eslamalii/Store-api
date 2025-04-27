@@ -1,16 +1,16 @@
-FROM node:current
+FROM oven/bun:alpine
 
 WORKDIR /app
 
 COPY package.json bun.lockb* ./
+RUN bun install
 
 COPY prisma ./prisma
+RUN bun prisma generate
+
 COPY tsconfig.json ./
 COPY src ./src
-
-RUN npx prisma generate
-
-RUN npm run build
+RUN bun build src/server.ts --outdir dist
 
 EXPOSE 3000
 CMD ["node", "dist/server.js"]
